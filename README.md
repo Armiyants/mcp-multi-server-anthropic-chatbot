@@ -62,3 +62,6 @@ Feel free to submit issues and enhancement requests! ☺️
 
 ## 
 Fetch the content of this website: https://modelcontextprotocol.io/docs/concepts/architecture and save the content in the file "mcp_summary.md", create a visual diagram that summarizes the content of "mcp_summary.md" and save it in a text file
+
+##
+Resources are a core primitive in the MCP that allow servers to expose data and content that can be read by clients and used as context for LLM interactions.

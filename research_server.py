@@ -67,8 +67,7 @@ def get_arxiv_papers(topic: str, max_results: int = 5) -> List[arxiv.Result]:
         papers_metadata[paper.get_short_id()] = paper_metadata
 
         #save metadata to json file in topic directory
-        paper_path = os.path.join(topic_dir, f"{paper.get_short_id()}.json")
-
+        paper_path = os.path.join(topic_dir, "papers_info.json")
         try: 
             with open(paper_path, "w") as json_file:
                 json.dump(paper_metadata, json_file, indent=2)
@@ -97,30 +96,87 @@ def extract_info(paper_id: str) -> str:
     for item in os.listdir(PAPERS_DIR):
         item_path = os.path.join(PAPERS_DIR, item)
         if os.path.isdir(item_path):
-            file_path = os.path.join(item_path, f"{paper_id}.json")
+            file_path = os.path.join(item_path, "papers_info.json")
             if os.path.isfile(file_path):
                 try:
-                    with open(file_path, "r") as papers_metadata:
-                        papers_info = json.load(papers_metadata)
-                        return json.dumps(papers_info, indent=4)
+                    with open(file_path, "r") as json_file:
+                        papers_info = json.load(json_file)
+                        if paper_id in papers_info:
+                            return json.dumps(papers_info[paper_id], indent=2)
                 except (FileNotFoundError, json.JSONDecodeError) as e:
                     print(f"Error reading {file_path}: {str(e)}")
                     continue
-    
-    return f"Paper {paper_id} not found. Try searching for it first using 'get_arxiv_papers'."
+    return f"There's no saved information related to paper {paper_id}."
 
-#now let's write a command to start running the server locally by specifying the transport protocol
+#resources are read-only data that applications can choose to use or we can give to a model 
+#let's now add resources to our server 
+@mcp.resource("papers://folders")
+def get_available_folders() -> str:
+    """
+    List all available topic folders in the papers directory.
+    """
+    folders = []
+    #let's now get all topic directories 
+    if os.path.exists(PAPERS_DIR):
+        for topic_dir in os.listdir(PAPERS_DIR):
+            topic_path = os.path.join(PAPERS_DIR, topic_dir)
+            if os.path.isdir(topic_path):
+                papers_file = os.path.join(topic_path, "papers_info.json")
+                if os.path.exists(papers_file):
+                    folders.append(topic_dir)
+
+    #Let's create a simple markdown list
+    content = "# Available Topics\n\n"
+    if folders:
+        for folder in folders:
+            content += f"- {folder}\n"
+        content += "\nUse @{folder} to access papers in this topic.\n"
+    else:
+        content += "No topics found.\n"
+    return content
+
+
+@mcp.resource("papers://{topic}")
+def get_topic_papers(topic: str) -> str:
+    """ 
+    Get detailed information about papers on a specific topic.
+    
+    Required Arguments:
+        "topic": The research topic to retrieve papers for. 
+    """
+    topic_dir = topic.lower().replace(" ", "_")
+    papers_file = os.path.join(PAPERS_DIR, topic_dir, "papers_info.json")
+    
+    if not os.path.exists(papers_file):
+        return f"# No papers found for topic: {topic}\n\nPlease try searching for papers on this topic first."
+    
+    try:
+        with open(papers_file, 'r') as f:
+            papers_data = json.load(f)
+        
+        # Create markdown content with paper details
+        content = f"# Papers on {topic.replace('_', ' ').title()}\n\n"
+        content += f"Total papers: {len(papers_data)}\n\n"
+        
+        for paper_id, paper_info in papers_data.items():
+            content += f"## {paper_info['title']}\n"
+            content += f"- **Paper ID**: {paper_id}\n"
+            content += f"- **Authors**: {', '.join(paper_info['authors'])}\n"
+            content += f"- **Published**: {paper_info['published']}\n"
+            content += f"- **PDF URL**: [{paper_info['pdf_url']}]({paper_info['pdf_url']})\n\n"
+            content += f"### Summary\n{paper_info['summary'][:500]}...\n\n"
+            content += "---\n\n"
+        
+        return content
+    except json.JSONDecodeError:
+        return f"# Error reading papers data for {topic}\n\nThe papers data file is corrupted."
+
+
 if __name__ == "__main__":
+    # Initialize and run the server
     try:
         print("Starting MCP server...")
-        import asyncio
-        asyncio.run(mcp.run(transport="stdio"))
+        mcp.run(transport='stdio')
     except Exception as e:
         print(f"Error starting server: {str(e)}")
 
-
-# for running locally let's use the npc inspector to have the inspector UI
-# and for that we need to run the command: <npx @modelcontextprotocol/inspector python mcp_server.py>
-# and then go ahead and open the URL provided in the terminal, jump to inspector UI and "connect" to the server
-# You can go ahead and check the "list tools" button to see the tools that are available 
-# and then you can run those tools 
