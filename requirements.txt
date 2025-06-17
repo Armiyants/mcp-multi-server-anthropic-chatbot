@@ -1,0 +1,8 @@
+anthropic>=0.8.0
+arxiv>=2.0.0
+python-dotenv>=1.0.0
+mcp>=0.1.0
+modelcontextprotocol>=0.1.0
+ipython>=8.0.0
+anyio>=4.5.0
+nest_asyncio>=1.0.0
