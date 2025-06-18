@@ -154,7 +154,7 @@ def get_topic_papers(topic: str) -> str:
         with open(papers_file, 'r') as f:
             papers_data = json.load(f)
         
-        # Create markdown content with paper details
+        # let's now create a markdown content with paper details to return 
         content = f"# Papers on {topic.replace('_', ' ').title()}\n\n"
         content += f"Total papers: {len(papers_data)}\n\n"
         
@@ -171,6 +171,39 @@ def get_topic_papers(topic: str) -> str:
     except json.JSONDecodeError:
         return f"# Error reading papers data for {topic}\n\nThe papers data file is corrupted."
 
+# "prompt" is meant to be user controlled, and the server can also provide a "prompt template" to the client 
+# so that the user can use the template and not have todo the whole prompt engineering themselves, 
+# but provide only the dynamic values needed to be filled in the template 
+# let's now add a prompt template to our server 
+@mcp.prompt()
+def generate_search_prompt(topic: str, num_papers: int = 5) -> str:
+    """
+    Generate a prompt for Claude to search, find and then discuss the papers on a specific topic.
+    """ 
+    return f"""
+    You are an experienced and very helpful assistant that can search for papers on a specific topic.
+    Search for {num_papers} academic papers about '{topic}' using the search_papers tool. 
+
+    Follow these steps: 
+    1. First, search for the papers using search_papers(topic='{topic}', max_results={num_papers})
+    2. For each paper found, extract and organize the following information using the extract_info tool:
+   - Paper title
+   - Authors
+   - Publication date
+   - Brief summary of the key findings
+   - Main contributions or innovations
+   - Methodologies used
+   - Relevance to the topic '{topic}'
+
+    3. Once you have the information for all papers, provide a comprehensive summary that includes:
+   - Overview of the current state of research in '{topic}'
+   - Common themes and trends across the papers
+   - Key research gaps or areas for future investigation
+   - Most impactful or influential papers in this area
+
+   4. Organize your findings in a clear, to the point and concise manner, structured in a format with headings and bullet points for easy readeability. 
+
+   Please present both detailed information about each paper and a high level summary of the current research state in {topic}."""
 
 if __name__ == "__main__":
     # Initialize and run the server
