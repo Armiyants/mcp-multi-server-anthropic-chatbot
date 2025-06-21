@@ -54,7 +54,7 @@ Feel free to add your preffered ones too. :))
    ```
    
 ### Example Queries: 
-** - Fetch the content of this website: https://modelcontextprotocol.io/docs/concepts/architecture and save the content in the file "mcp_summary.md"
+- Fetch the content of this website: https://modelcontextprotocol.io/docs/concepts/architecture and save the content in the file "mcp_summary.md"
 - Create a visual diagram that summarizes the content of "mcp_summary.md"
 
 ### Example Workflow:
