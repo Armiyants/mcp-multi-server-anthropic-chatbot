@@ -1,4 +1,4 @@
-# 🤖 Multi-Server MCP Research Assistant
+# Multi-Server MCP Research Assistant
 
 This chatbot helps you discover and understand research papers from arXiv using natural language and the Model Context Protocol (MCP).
 
@@ -9,7 +9,7 @@ This chatbot helps you discover and understand research papers from arXiv using 
 -  Prompts**: Pre-built prompt templates so the user doesn't have to do the whole prompt engineering themselves
 -  Tools**: Servers' capabilities
 
-## 🏗️ Multi-Server Architecture
+## Multi-Server Architecture
 ### Connected Servers
 
 1. **Research Server** (`mcp_chatbot/research_server.py`)
