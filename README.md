@@ -1,99 +1,69 @@
-# ArXiv Paper Search and MCP Chatbot 💬🤖
+# 🤖 Multi-Server MCP Research Assistant
 
-A Python-based chatbot that uses the Anthropic Claude API for natural language processing to help users search and interact with arXiv papers. The project combines direct arXiv integration with MCP (Model Context Protocol) capabilities for enhanced functionality.
+This chatbot helps you discover and understand research papers from arXiv using natural language and the Model Context Protocol (MCP).
 
-## Features
+## What it has/does
 
-### Paper Search and Management
-- **Paper Search**: Natural language queries to find papers (e.g., "quantum computing" or "human brain")
-- **Paper Details**: Get detailed information about specific papers using their IDs
-- **Topic Navigation**: Browse papers by topic using `@folders` and `@<topic>` commands
+-  Multi-Server Architecture**: Connects to multiple MCP servers simultaneously
+-  Resources**: Access organized paper collections by topic -- > read-only data
+-  Prompts**: Pre-built prompt templates so the user doesn't have to do the whole prompt engineering themselves
+-  Tools**: Servers' capabilities
 
-### arXiv SDK Integration    
-The project uses the official arXiv Python SDK (`arxiv` package) to interact with arXiv's API:
-- **Search Functionality**: Uses `arxiv.Search` for paper queries
-- **Result Processing**: Handles paper metadata
-- **Client Management**: Uses `arxiv.Client` for API requests
+## 🏗️ Multi-Server Architecture
+### Connected Servers
 
-### MCP Integration (Experimental)
-- Resource-based paper access
-- Prompt management system
-- Command interface:
-  - `/prompts` - List available prompts
-  - `/prompt <name>` - Execute specific prompts
+1. **Research Server** (`mcp_chatbot/research_server.py`)
+   - **Tools**: `get_arxiv_papers`, `extract_info`
+   - **Resources**: `papers://folders`, `papers://{topic}`
+   - **Prompts**: `generate_search_prompt`
+   - **Purpose**: arXiv paper search and analysis
 
-## Project Structure
-```
-mcp_project_anthropic_arxiv_chatbot/
-├── mcp_chatbot/
-│   ├── __init__.py
-│   ├── chatbot.py
-│   └── research_server.py
-├── variables.py
-├── requirements.txt
-└── README.md
-```
+2. **Fetch Server** (`mcp-server-fetch`)
+   - **Purpose**: Web content retrieval and processing (see "Example Queries" section to play around)
 
-## Prerequisites
+3. **Filesystem Server** (`@modelcontextprotocol/server-filesystem`)
+   - **Purpose**: File system operations and management
 
-- Python 3.x
-- Anthropic API key (Claude API access)
-- Internet connection
-- arXiv API access (no key required)
+### Server Configuration
 
-## Installation
+The system uses `server_config.json` to manage multiple server connections.
+Feel free to add your preffered ones too. :))
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd mcp_project_anthropic_arxiv_chatbot
-```
+## Start
 
-2. Install required packages:
-```bash
-pip install -r requirements.txt
-```
+1. **(Recommended) Create and activate a virtual environment**
 
-3. Create a `.env` file in the project root and add your Anthropic API key:
-```
-ANTHROPIC_API_KEY=your_api_key_here
-```
+   This keeps dependencies isolated and avoids conflicts.
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
 
-## Usage
-
-1. Run the chatbot:
-```bash
-python -m mcp_chatbot.chatbot
-```
-
-2. Available commands:
-   - Natural language queries: "Search for papers about quantum computing"
-   - Paper ID lookup: "Get information about paper [ID]"
-   - Topic browsing: `@folders`, `@<topic>`
-   - Prompt system: `/prompts`, `/prompt <name>`
-   - Exit: Type 'exit' to quit
-
-3. Example queries:
-   ```
-   "Search for papers about quantum computing"
-   "Get information about paper 2103.12345"
-   @folders
-   @quantum_computing
-   /prompts
+2. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
    ```
 
-## Error Handling
+3. **Set up your API key** (create a `.env` file):
+   ```
+   ANTHROPIC_API_KEY=your_api_key_here
+   ```
 
-The chatbot includes error handling for:
-- API connection issues
-- Invalid paper IDs
-- Search query errors
-- Resource access failures
+4. **Start the chatbot**:
+   ```bash
+   uv run mcp_chatbot.py
+   ```
+   
+### Example Queries: 
+** - Fetch the content of this website: https://modelcontextprotocol.io/docs/concepts/architecture and save the content in the file "mcp_summary.md"
+- Create a visual diagram that summarizes the content of "mcp_summary.md"
+
+### Example Workflow:
+
+1. **Search for papers**: *"Find papers about neural networks"*
+2. **Browse topics**: `@folders` to see available topics
+3. **Explore specific topic**: `@neural_networks_brain_functions`
+4. **Get comprehensive analysis**: `/prompt generate_search_prompt topic=neural_networks num_papers=10`
 
 ## Contributing
 
 Feel free to submit issues and enhancement requests! ☺️
-
-## License
-
-[Your chosen license]

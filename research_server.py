@@ -2,9 +2,9 @@ from mcp.server.fastmcp import FastMCP
 import arxiv
 from typing import List
 import os
-import json
+import json 
 
-PAPERS_DIR = "papers"
+PAPERS_DIR = os.path.join(os.path.dirname(__file__), "papers")
 
 # Initialize the MCP server with explicit configuration
 mcp = FastMCP(

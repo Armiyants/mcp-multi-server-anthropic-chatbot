@@ -70,7 +70,7 @@ class MCP_ChatBot:
     async def connect_to_servers(self): 
         """Connect to all MCP servers configured in the server_config.json file"""
         try:
-            with open("../server_config.json", "r") as file:
+            with open("server_config.json", "r") as file:
                 data = json.load(file)
                 #now let's turn our parsed data into a dictionary 
                 servers = data.get("mcpServers", {})
@@ -190,7 +190,7 @@ class MCP_ChatBot:
                 elif hasattr(prompt_content, 'text'):
                     text = prompt_content.text
                 else:
-                    #if it’s a list of items, join them into a single text string
+                    #if it's a list of items, join them into a single text string
                     text = " ".join(item.text if hasattr(item, 'text') else str(item) 
                                   for item in prompt_content)
                 
