@@ -4,13 +4,14 @@ from typing import List
 import os
 import json
 
-PAPERS_DIR = os.path.join(os.path.dirname(__file__), "papers")
+PAPERS_DIR = "papers"
 
 # Initialize the MCP server with explicit configuration
 mcp = FastMCP(
-    name="research_mcp",
+    name="research",
     description="A server for searching and extracting information from arXiv papers",
-    version="1.0.0"
+    version="1.0.0",
+    port=8001,
 )
 
 #let's now define our tools 
