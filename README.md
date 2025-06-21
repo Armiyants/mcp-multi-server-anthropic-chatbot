@@ -4,10 +4,10 @@ This chatbot helps you discover and understand research papers from arXiv using 
 
 ## What it has/does
 
--  Multi-Server Architecture**: Connects to multiple MCP servers simultaneously
--  Resources**: Access organized paper collections by topic -- > read-only data
--  Prompts**: Pre-built prompt templates so the user doesn't have to do the whole prompt engineering themselves
--  Tools**: Servers' capabilities
+-  **Multi-Server Architecture**: Connects to multiple MCP servers simultaneously
+-  **Resources**: Access organized paper collections by topic -- > read-only data
+-  **Prompts**: Pre-built prompt templates so the user doesn't have to do the whole prompt engineering themselves
+-  **Tools**: Servers' capabilities
 
 ## 🏗️ Multi-Server Architecture
 ### Connected Servers
