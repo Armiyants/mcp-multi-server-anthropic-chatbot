@@ -1,21 +1,38 @@
-# ArXiv Paper Search Chatbot 💬🤖
+# ArXiv Paper Search and MCP Chatbot 💬🤖
 
-A Python-based chatbot that uses the Anthropic Claude API for natural language processing and helps users search and retrieve information from arXiv papers. 
+A Python-based chatbot that uses the Anthropic Claude API for natural language processing to help users search and interact with arXiv papers. The project combines direct arXiv integration with MCP (Model Context Protocol) capabilities for enhanced functionality.
 
-# What I Built 
+## Features
 
-I created two main tools:
-1. **Paper Search**: Just tell it what you're interested in (like "quantum computing" or "human brain"), and it'll find relevant papers
-2. **Paper Details**: Ask about a specific paper using its ID, and it'll give you all info
+### Paper Search and Management
+- **Paper Search**: Natural language queries to find papers (e.g., "quantum computing" or "human brain")
+- **Paper Details**: Get detailed information about specific papers using their IDs
+- **Topic Navigation**: Browse papers by topic using `@folders` and `@<topic>` commands
 
-## arXiv SDK Integration    
-
-The project uses the official arXiv Python SDK (`arxiv` package) to interact with arXiv's API. 
-Key features:
-
+### arXiv SDK Integration    
+The project uses the official arXiv Python SDK (`arxiv` package) to interact with arXiv's API:
 - **Search Functionality**: Uses `arxiv.Search` for paper queries
 - **Result Processing**: Handles paper metadata
 - **Client Management**: Uses `arxiv.Client` for API requests
+
+### MCP Integration (Experimental)
+- Resource-based paper access
+- Prompt management system
+- Command interface:
+  - `/prompts` - List available prompts
+  - `/prompt <name>` - Execute specific prompts
+
+## Project Structure
+```
+mcp_project_anthropic_arxiv_chatbot/
+├── mcp_chatbot/
+│   ├── __init__.py
+│   ├── chatbot.py
+│   └── research_server.py
+├── variables.py
+├── requirements.txt
+└── README.md
+```
 
 ## Prerequisites
 
@@ -29,7 +46,7 @@ Key features:
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd <repository-name>
+cd mcp_project_anthropic_arxiv_chatbot
 ```
 
 2. Install required packages:
@@ -46,22 +63,37 @@ ANTHROPIC_API_KEY=your_api_key_here
 
 1. Run the chatbot:
 ```bash
-python chatbot.py
+python -m mcp_chatbot.chatbot
 ```
 
-2. Example queries:
-   - "Search for papers about quantum computing"
-   - "Get information about paper paper_id_here"
-   - Type 'quit' to exit
+2. Available commands:
+   - Natural language queries: "Search for papers about quantum computing"
+   - Paper ID lookup: "Get information about paper [ID]"
+   - Topic browsing: `@folders`, `@<topic>`
+   - Prompt system: `/prompts`, `/prompt <name>`
+   - Exit: Type 'exit' to quit
 
+3. Example queries:
+   ```
+   "Search for papers about quantum computing"
+   "Get information about paper 2103.12345"
+   @folders
+   @quantum_computing
+   /prompts
+   ```
+
+## Error Handling
+
+The chatbot includes error handling for:
+- API connection issues
+- Invalid paper IDs
+- Search query errors
+- Resource access failures
 
 ## Contributing
+
 Feel free to submit issues and enhancement requests! ☺️
 
+## License
 
-
-## 
-Fetch the content of this website: https://modelcontextprotocol.io/docs/concepts/architecture and save the content in the file "mcp_summary.md", create a visual diagram that summarizes the content of "mcp_summary.md" and save it in a text file
-
-##
-Resources are a core primitive in the MCP that allow servers to expose data and content that can be read by clients and used as context for LLM interactions.
+[Your chosen license]
