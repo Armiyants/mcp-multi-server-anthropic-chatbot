@@ -1,6 +1,7 @@
 # Multi-Server MCP Research Assistant
 
 This chatbot helps you discover and understand research papers from arXiv using natural language and the Model Context Protocol (MCP).
+Hope the commented "lectures" will be useful and help clarify the stuff. :D 
 
 ## What it has/does
 
